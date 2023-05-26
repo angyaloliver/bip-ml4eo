@@ -3,7 +3,20 @@ Repository for the Machine Learning for Earth Observation Summer School in Pavia
 
 ## Setup environment
 
-TBD...
+Setup the conda environment locally with:
+```
+conda env create -f conda-env.yml
+```
+Or use mamba instead (identical result with faster dependency solving):
+```
+mamba env create -f conda-env.yml
+```
+This will create an environment named `bip-ml4eo`. Activate with:
+```
+conda activate bip-ml4eo
+```
+Now you can run the code and develop in this repo (except for non-Python code).
+
 
 ## Download the data
 
