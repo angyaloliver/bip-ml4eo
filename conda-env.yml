@@ -1,0 +1,25 @@
+name: bip-ml4eo
+channels:
+  - conda-forge
+  - pytorch
+  - defaults
+dependencies:
+  - python=3.10
+  - notebook
+  - matplotlib
+  - scikit-learn
+  - statsmodels
+  - pytorch::pytorch
+  - pytorch::torchvision
+  - pytorch::cpuonly
+  - pandas
+  - rasterio
+  - tqdm
+  - gdown
+  - pip
+  - pip:
+    - black
+    - isort
+    - mypy
+    - pystac-client
+    - stacterm
