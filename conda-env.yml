@@ -14,6 +14,7 @@ dependencies:
   - pytorch::cpuonly
   - pandas
   - rasterio
+  - shapely
   - tqdm
   - gdown
   - pip
