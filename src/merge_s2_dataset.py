@@ -4,6 +4,7 @@ Merge the Sentinel-2 raster tiles.
 Parameters:
     ROOT: the path of the root directory containing tiles.
     OUT_ROOT: the path of the output root directory.
+    BOUNDS: bounds of the output image (optional)
 """
 
 import re
@@ -17,7 +18,10 @@ from rasterio.merge import merge
 from tqdm import tqdm
 
 ROOT = "data/Water/sentinel-2-cremona/images"
-OUT_ROOT = "data/Water/sentinel-2-cremona/merged-images/"
+OUT_ROOT = "data/Water/sentinel-2-cremona/merged-images-inter/"
+
+# BOUNDS = None
+BOUNDS = (9.83888798084747, 45.05994380907726, 10.103352000492258, 45.15076348430174)
 
 
 S2_TILE_FILENAME_PATTERN = re.compile(
@@ -120,7 +124,7 @@ def copy_nanmin(merged_data, new_data, merged_mask, new_mask, **kwargs):
     np.copyto(merged_data, new_data, where=mask, casting="unsafe")
 
 
-def merge_s2_tiles(tiles_paths: Sequence[Path], out_root: Path) -> None:
+def merge_s2_tiles(tiles_paths: Sequence[Path], out_root: Path, **kwargs) -> None:
     """Merge tiles by creating a mosaic and output to a file."""
 
     # open raster files in DatasetReader objects
@@ -138,7 +142,7 @@ def merge_s2_tiles(tiles_paths: Sequence[Path], out_root: Path) -> None:
     out_path = out_root / out_filename
 
     # merge tiles to create a mosaic
-    merge(src_files, method="first", dst_path=out_path)
+    merge(src_files, method="first", dst_path=out_path, bounds=BOUNDS)
 
 
 def get_s2_tiles_paths(root: Path) -> Generator[Path, None, None]:
@@ -152,7 +156,7 @@ def get_s2_tiles_paths(root: Path) -> Generator[Path, None, None]:
             yield path
 
 
-def merge_s2_dataset(root: Path, out_root: Optional[Path] = None) -> None:
+def merge_s2_dataset(root: Path, out_root: Optional[Path] = None, **kwargs) -> None:
     """Merge all tiles in the root folder and output to a folder."""
     if out_root is None:
         out_root = root.with_name("merged-" + root.name)
@@ -180,7 +184,7 @@ def main() -> None:
     if OUT_ROOT is not None:
         out_root = Path(OUT_ROOT)
 
-    merge_s2_dataset(root, out_root)
+    merge_s2_dataset(root, out_root, bounds=BOUNDS)
 
 
 if __name__ == "__main__":
